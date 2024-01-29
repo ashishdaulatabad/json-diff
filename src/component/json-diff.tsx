@@ -11,22 +11,21 @@ export default function JsonDifference() {
     let [filter, setFilter] = React.useState<string | null>(null)
     let [isComparing, setIsComparing] = React.useState<boolean>(false)
 
-    async function comp(first: string, second: string) {
+    React.useEffect(() => {
         if (first?.length && second?.length) {
-            setIsComparing(true)
-            let value = await compare.compare(JSON.parse(first), JSON.parse(second))
-                .then(data => { setIsComparing(false); return data.get() }) 
+            compare.compare(JSON.parse(first), JSON.parse(second))
+                .then(data => setSummary(data.get() as IterableSummary)) 
                 .catch(console.error)
-
-            setSummary(value as IterableSummary)
+                .finally(() => setIsComparing(false))
         }
-    }
+    }, [isComparing])
 
     return (
         <>
             <div className="flex flex-row font-mono">
                 <div className="w-full p-8">
-                    <textarea 
+                    <textarea
+                        value={first ?? ''}
                         className="w-full h-96 p-2 border border-gray-300 resize-none focus:border-gray-400 focus:outline-none font-mono rounded-sm"
                         placeholder="Enter your first JSON object"
                         onInput={(e) => setFirst((e.target as HTMLTextAreaElement).value)}
@@ -34,7 +33,8 @@ export default function JsonDifference() {
                     </textarea>
                 </div>
                 <div className="w-full p-8">
-                    <textarea 
+                    <textarea
+                        value={second ?? ''}
                         className="w-full h-96 p-2 border border-gray-300 resize-none focus:border-gray-400 focus:outline-none font-mono rounded-sm"
                         placeholder="Enter your second JSON object"
                         onInput={(e) => setSecond((e.target as HTMLTextAreaElement).value)}
@@ -45,10 +45,18 @@ export default function JsonDifference() {
             <div className="flex flex-row justify-center items-center mb-8">
                 <button
                     className={"bg-white border border-black border-b-4 border-r-4 px-8 py-2 rounded-sm font-mono active:border-b-8 ease-in-out transition-all duration-50 active:bg-gray-100"}
-                    onClick={async (_) => comp(first || '', second || '')}
+                    onClick={async (_) => React.startTransition(() => setIsComparing(true))}
                 >
                     {(isComparing ? <Bars width={30} height={30} color={"black"} /> : "Compare")}
                 </button>
+                <button
+                    className={"bg-white border border-black border-b-4 border-r-4 px-8 py-2 rounded-sm font-mono active:border-b-8 ease-in-out transition-all duration-50 active:bg-gray-100 ml-10"}
+                    onClick={async (_) => React.startTransition(() => {
+                        setSummary({} as IterableSummary)
+                        setFirst(null)
+                        setSecond(null)
+                    })}
+                >Clear</button>
             </div>
             <div className="summary p-10 flex justify-center items-center">
                 <div className="items-start font-mono text-left w-4/5 p-8 border-t-2 border-l-2 border-black border-r-8 border-b-8">
