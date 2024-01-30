@@ -35,6 +35,8 @@ export default function JsonDifference() {
             <div className="flex flex-row font-mono">
                 <div className="w-full p-8">
                     <textarea
+                        autoComplete="false"
+                        spellCheck="false"
                         value={first ?? ''}
                         className="w-full h-96 p-2 border border-gray-300 resize-none focus:border-gray-400 focus:outline-none font-mono rounded-sm"
                         placeholder="Enter your first JSON object"
@@ -44,6 +46,8 @@ export default function JsonDifference() {
                 </div>
                 <div className="w-full p-8">
                     <textarea
+                        autoComplete="false"
+                        spellCheck="false"
                         value={second ?? ''}
                         className="w-full h-96 p-2 border border-gray-300 resize-none focus:border-gray-400 focus:outline-none font-mono rounded-sm"
                         placeholder="Enter your second JSON object"
@@ -60,7 +64,7 @@ export default function JsonDifference() {
                     {(isComparing ? <Bars width={30} height={30} color={"black"} /> : "Compare")} {isComparing}
                 </button>
                 <button
-                    className={"bg-white border border-black border-b-4 border-r-4 px-8 py-2 rounded-sm font-mono active:border-b-8 ease-in-out transition-all duration-50 active:bg-gray-100 ml-10"}
+                    className="bg-white border border-black border-b-4 border-r-4 px-8 py-2 rounded-sm font-mono active:border-b-8 ease-in-out transition-all duration-50 active:bg-gray-100 ml-10"
                     onClick={clearComparison}
                 >Clear</button>
             </div>

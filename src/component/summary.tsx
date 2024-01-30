@@ -8,6 +8,7 @@ export default function DiffSummary(props: React.PropsWithRef<Info<IterableSumma
             {...field} key={index} 
             depth={props.depth}
             filterKeyword={props.filterKeyword}
+            collapsed={props.summary && (props.summary.length < 100)}
         />
     ))
     return (

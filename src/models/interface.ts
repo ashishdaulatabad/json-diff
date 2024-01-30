@@ -33,7 +33,8 @@ export type Info<Type> = {
     [Property in keyof Type]: Type[Property]
 } & {
     depth?: number,
-    filterKeyword?: string
+    filterKeyword?: string,
+    collapsed?: boolean
 }
 
 export interface Field {
