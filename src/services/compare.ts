@@ -648,9 +648,36 @@ const compareDifferentIterableTypes = (
     leftParentHierarchy: Set<any>,
     rightParentHierarchy: Set<any>
 ): Result<IterableSummary, CError> => {
-    // Either way, we can consider them as two objects and
-    // call compareTwoObjects
-    return compareTwoObjects(first, second, path, leftParentHierarchy, rightParentHierarchy, false)
+    const firstIterableSummaryResult = constructOneSidedIterableType(
+        first,
+        path,
+        'left',
+        leftParentHierarchy
+    )
+    if (firstIterableSummaryResult.err()) {
+        return firstIterableSummaryResult
+    }
+
+    const secondIterableSummaryResult = constructOneSidedIterableType(
+        second,
+        path,
+        'right',
+        rightParentHierarchy
+    )
+    if (secondIterableSummaryResult.err()) {
+        return secondIterableSummaryResult
+    }
+
+    const secondSummary = secondIterableSummaryResult.get() as IterableSummary
+    const firstSummary = firstIterableSummaryResult.get() as IterableSummary
+    const overallSummary = firstSummary.summary?.concat(secondSummary.summary as Array<Field>);
+
+    return Ok({
+        isSame: firstSummary.isSame && secondSummary.isSame,
+        summary: overallSummary,
+        leftonly: firstSummary.leftonly,
+        rightonly: secondSummary.rightonly,
+    })
 }
 
 const constructOneSidedIterableType = (

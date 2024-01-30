@@ -5,7 +5,17 @@ import Types from '../utils/types'
 
 function transformString(data: string): string | JSX.Element {
     if (data.match(/^https?:\/\//)) {
-        return <a href={data} className="text-blue-400 underline visited:text-magenta-500" target="_blank">"{data}"</a>
+        return (
+            <>
+                {"\""}
+                <a 
+                    href={data} 
+                    className="text-blue-400 underline visited:text-magenta-500"
+                    target="_blank"
+                >{data}</a>
+                {"\""}
+            </>
+        )
     }
 
     return `"${data}"`
@@ -85,13 +95,16 @@ export default function DiffElement(props: React.PropsWithRef<Info<Field>>): JSX
     let [childVisible, setChildVisible] = React.useState<boolean>(false)
     /// To do: Something with props.children
     const depth = props.depth as number
+    const indexed = Types.ftype(props.fieldKey) === Type.Number ?
+        (<><b>- [{props.fieldKey}]</b>&nbsp;</>) :
+        (<><b>{props.fieldKey}</b>:&nbsp;</>)
     // const margin = `ml-${depth || 0}`
     return !props.hasOwnProperty('children') ? (
         <div className="flex w-full hover:bg-gray-100">
             <div className={"w-full flex p-0.5 " + bgColorLeft(props.diffResult)}>
                 {depthWidth(depth)}
                 <div className="w-full">
-                    <b>{props.fieldKey}</b>:&nbsp;
+                    {indexed}
                     <span className={getStylesLeft(props)}> 
                         {transform(props.left, props.leftType)}
                     </span>
@@ -100,7 +113,7 @@ export default function DiffElement(props: React.PropsWithRef<Info<Field>>): JSX
             <div className={"w-full flex p-0.5 " + bgColorRight(props.diffResult)}>
                 {depthWidth(depth)}
                 <div className="w-full">
-                    <b>{props.fieldKey}</b>:&nbsp;
+                    {indexed}
                     <span className={getStylesRight(props)}>
                         {transform(props.right, props.rightType)}
                     </span>
@@ -113,7 +126,7 @@ export default function DiffElement(props: React.PropsWithRef<Info<Field>>): JSX
                 <div className={"w-full flex p-0.5 " + bgColorLeft(props.diffResult)}>
                     {depthWidth(depth)}
                     <div className="w-full">
-                        <b>{props.fieldKey}</b>:&nbsp;
+                        {indexed}
                         <span className={getStylesLeft(props)}> 
                             {!Types.typeIsIterable(props?.leftType as Type) ? transform(props.left, props.leftType) : ''}
                         </span>
@@ -122,7 +135,7 @@ export default function DiffElement(props: React.PropsWithRef<Info<Field>>): JSX
                 <div className={"w-full flex p-0.5 " + bgColorRight(props.diffResult)}>
                     {depthWidth(depth)}
                     <div className="w-full">
-                        <b>{props.fieldKey}</b>:&nbsp;
+                        {indexed}
                         <span className={getStylesRight(props)}>
                             {!Types.typeIsIterable(props?.rightType as Type) ? transform(props.right, props.rightType) : ''}
                         </span>

@@ -15,10 +15,20 @@ export default function JsonDifference() {
         if (first?.length && second?.length) {
             compare.compare(JSON.parse(first), JSON.parse(second))
                 .then(data => setSummary(data.get() as IterableSummary)) 
-                .catch(console.error)
+                .catch((e) => {console.log(e)})
                 .finally(() => setIsComparing(false))
+        } else {
+            setIsComparing(false)
         }
     }, [isComparing])
+
+    const startComparison = async () => React.startTransition(() => setIsComparing(true))
+    const clearComparison = async () => React.startTransition(() => {
+        setIsComparing(false)
+        setFirst('')
+        setSecond('')
+        setSummary({} as IterableSummary)
+    })
 
     return (
         <>
@@ -45,17 +55,13 @@ export default function JsonDifference() {
             <div className="flex flex-row justify-center items-center mb-8">
                 <button
                     className={"bg-white border border-black border-b-4 border-r-4 px-8 py-2 rounded-sm font-mono active:border-b-8 ease-in-out transition-all duration-50 active:bg-gray-100"}
-                    onClick={async (_) => React.startTransition(() => setIsComparing(true))}
+                    onClick={startComparison}
                 >
-                    {(isComparing ? <Bars width={30} height={30} color={"black"} /> : "Compare")}
+                    {(isComparing ? <Bars width={30} height={30} color={"black"} /> : "Compare")} {isComparing}
                 </button>
                 <button
                     className={"bg-white border border-black border-b-4 border-r-4 px-8 py-2 rounded-sm font-mono active:border-b-8 ease-in-out transition-all duration-50 active:bg-gray-100 ml-10"}
-                    onClick={async (_) => React.startTransition(() => {
-                        setSummary({} as IterableSummary)
-                        setFirst(null)
-                        setSecond(null)
-                    })}
+                    onClick={clearComparison}
                 >Clear</button>
             </div>
             <div className="summary p-10 flex justify-center items-center">
