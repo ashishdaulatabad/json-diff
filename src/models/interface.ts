@@ -35,6 +35,7 @@ export type Info<Type> = {
     depth?: number,
     filterKeyword?: string,
     collapsed?: boolean
+    showOnlyDifferences?: boolean
 }
 
 export interface Field {

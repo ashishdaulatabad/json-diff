@@ -152,62 +152,65 @@ export default function DiffElement(props: React.PropsWithoutRef<Info<Field>>): 
         return () => {}
     }, [childVisible])
 
-    // const margin = `ml-${depth || 0}`
-    return !props.hasOwnProperty('children') ? (
-        <div className="flex w-full hover:bg-gray-100">
-            <div className={css("w-full flex p-0.5", bgColorLeft(props.diffResult))}>
-                {depthWidth(depth)}
-                <div className="w-full">
-                    {indexed}
-                    <span className={getStylesLeft(props)}> 
-                        {transform(props.left, props.leftType)}
-                    </span>
-                </div>
-            </div>
-            <div className={css("w-full flex p-0.5", bgColorRight(props.diffResult))}>
-                {depthWidth(depth)}
-                <div className="w-full">
-                    {indexed}
-                    <span className={getStylesRight(props)}>
-                        {transform(props.right, props.rightType)}
-                    </span>
-                </div>
-            </div>
-        </div>
-    ) : (
-        <div className="">
+    if (!props.showOnlyDifferences || (props.showOnlyDifferences && props.diffResult !== DiffType.Same)) {
+        return !props.hasOwnProperty('children') ? (
             <div className="flex w-full hover:bg-gray-100">
                 <div className={css("w-full flex p-0.5", bgColorLeft(props.diffResult))}>
                     {depthWidth(depth)}
-                    <div className="w-full flex">
+                    <div className="w-full">
                         {indexed}
                         <span className={getStylesLeft(props)}> 
-                            {!Types.typeIsIterable(props?.leftType as Type) ? transform(props.left, props.leftType) : collapsible(props.leftType as Type, childVisible, setChildVisible)}
+                            {transform(props.left, props.leftType)}
                         </span>
                     </div>
                 </div>
                 <div className={css("w-full flex p-0.5", bgColorRight(props.diffResult))}>
                     {depthWidth(depth)}
-                    <div className="w-full flex">
+                    <div className="w-full">
                         {indexed}
-                        <span className={css(getStylesRight(props))}>
-                            {!Types.typeIsIterable(props?.rightType as Type) ? transform(props.right, props.rightType) : collapsible(props.rightType as Type, childVisible, setChildVisible)}
+                        <span className={getStylesRight(props)}>
+                            {transform(props.right, props.rightType)}
                         </span>
                     </div>
                 </div>
             </div>
-            {
-                childVisible ?
-                    <div className="w-full flex">
-                        <DiffSummary 
-                            {...props.children as IterableSummary} 
-                            depth={(props?.depth ?? 0) + 1}
-                            filterKeyword={props.filterKeyword}
-                            collapsed={childVisible || false}
-                        />
-                    </div> :
-                    <></>
-            }
-        </div>
-    )
+        ) : (
+            <div className="">
+                <div className="flex w-full hover:bg-gray-100">
+                    <div className={css("w-full flex p-0.5", bgColorLeft(props.diffResult))}>
+                        {depthWidth(depth)}
+                        <div className="w-full flex">
+                            {indexed}
+                            <span className={getStylesLeft(props)}> 
+                                {!Types.typeIsIterable(props?.leftType as Type) ? transform(props.left, props.leftType) : collapsible(props.leftType as Type, childVisible, setChildVisible)}
+                            </span>
+                        </div>
+                    </div>
+                    <div className={css("w-full flex p-0.5", bgColorRight(props.diffResult))}>
+                        {depthWidth(depth)}
+                        <div className="w-full flex">
+                            {indexed}
+                            <span className={css(getStylesRight(props))}>
+                                {!Types.typeIsIterable(props?.rightType as Type) ? transform(props.right, props.rightType) : collapsible(props.rightType as Type, childVisible, setChildVisible)}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                {
+                    childVisible ?
+                        <div className="w-full flex">
+                            <DiffSummary 
+                                {...props.children as IterableSummary} 
+                                depth={(props?.depth ?? 0) + 1}
+                                filterKeyword={props.filterKeyword}
+                                collapsed={childVisible || false}
+                            />
+                        </div> :
+                        <></>
+                }
+            </div>
+        )
+    } else {
+        return (<></>)
+    }
 }

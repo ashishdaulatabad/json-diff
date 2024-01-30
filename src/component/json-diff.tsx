@@ -12,6 +12,7 @@ export default function JsonDifference() {
     let [summary, setSummary] = React.useState<IterableSummary>({} as IterableSummary)
     let [filter, setFilter] = React.useState<string | null>(null)
     let [isComparing, setIsComparing] = React.useState<boolean>(false)
+    let [showDiffOnly, setShowDiffOnly] = React.useState<boolean>(false)
     let showMessage = useContext(AlertContext) as AlertMessageFn
 
     const startComparison = () => React.startTransition(() => {
@@ -25,6 +26,9 @@ export default function JsonDifference() {
         setFirst('')
         setSecond('')
         setSummary({} as IterableSummary)
+    })
+    const toggleShowDiff = () => React.startTransition(() => {
+        setShowDiffOnly(!showDiffOnly)
     })
     
     React.useEffect(() => {
@@ -102,14 +106,29 @@ export default function JsonDifference() {
             </div>
             <div className="summary p-10 flex justify-center items-center">
                 <div className="items-start font-mono text-left w-4/5 p-8 border-t-2 border-l-2 border-black border-r-8 border-b-8">
-                    <div className="w-full mb-10">
+                    <div className="w-full">
+                        <input
+                            value={showDiffOnly ? 1 : 0}
+                            name="changes"
+                            id="changes"
+                            type="checkbox"
+                            className="scale-150"
+                            onClick={toggleShowDiff}
+                        />
+                        <label
+                            onClick={toggleShowDiff}
+                            htmlFor="changes" 
+                            className="ml-3"
+                        >Show Only Changes</label>
+                    </div>
+                    <div className="w-full mb-10 mt-3">
                         <input 
                             className="py-2 px-3 w-full rounded-sm border border-r-4 border-b-4 border-black active:outline-none"
                             placeholder="Search keywords to filter (Does not work)"
                             onInput={(e) => setFilter((e.target as HTMLInputElement).value)}
                         />
                     </div>
-                    <DiffSummary {...summary} filterKeyword={filter || ''} />
+                    <DiffSummary {...summary} filterKeyword={filter || ''} showOnlyDifferences={showDiffOnly} />
                 </div>
             </div>
         </>
