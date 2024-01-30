@@ -28,35 +28,37 @@ export default function JsonDifference() {
     })
     
     React.useEffect(() => {
-        if (isComparing && first?.trim().length && second?.trim().length) {
-            try {
-                compare.compare(JSON.parse(first.trim()), JSON.parse(second.trim()))
-                    .then(data => setSummary(data.get() as IterableSummary)) 
-                    .catch((e) => {console.log(e)})
-                    .finally(() => setIsComparing(false))
-            } catch(e: any) {
+        if (isComparing) {
+            if (first?.trim().length && second?.trim().length) {
+                try {
+                    compare.compare(JSON.parse(first.trim()), JSON.parse(second.trim()))
+                        .then(data => setSummary(data.get() as IterableSummary)) 
+                        .catch((e) => {console.log(e)})
+                        .finally(() => setIsComparing(false))
+                } catch(e: any) {
+                    showMessage({
+                        severity: AlertSeverity.Error,
+                        header: 'Error',
+                        message: e.message
+                    })
+                } finally {
+                    setIsComparing(false)
+                }
+            } else if (!first || !first.trim().length) {
                 showMessage({
-                    severity: AlertSeverity.Error,
-                    header: 'Error',
-                    message: e.message
+                    severity: AlertSeverity.Info,
+                    header: 'No JSON Input',
+                    message: 'No JSON header input was defined for first JSON input.'
                 })
-            } finally {
+                setIsComparing(false)
+            } else if (!second || !second.trim().length) {
+                showMessage({
+                    severity: AlertSeverity.Info,
+                    header: 'No JSON Input',
+                    message: 'No JSON header input was defined for second JSON input.'
+                })
                 setIsComparing(false)
             }
-        } else if (!first || !first.trim().length) {
-            showMessage({
-                severity: AlertSeverity.Info,
-                header: 'No JSON Input',
-                message: 'No JSON header input was defined for first JSON input.'
-            })
-            setIsComparing(false)
-        } else if (!second || !second.trim().length) {
-            showMessage({
-                severity: AlertSeverity.Info,
-                header: 'No JSON Input',
-                message: 'No JSON header input was defined for second JSON input.'
-            })
-            setIsComparing(false)
         }
     }, [isComparing])
 
