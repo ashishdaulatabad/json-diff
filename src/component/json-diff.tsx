@@ -1,8 +1,10 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { IterableSummary } from '../models/interface'
 import compare from '../services/compare'
 import DiffSummary from './summary'
 import { Bars } from 'react-loader-spinner'
+import { AlertContext, AlertMessageFn } from '../providers/alerts'
+import { AlertSeverity } from './alerts'
 
 export default function JsonDifference() {
     let [first, setFirst] = React.useState<string | null>(null)
@@ -10,25 +12,53 @@ export default function JsonDifference() {
     let [summary, setSummary] = React.useState<IterableSummary>({} as IterableSummary)
     let [filter, setFilter] = React.useState<string | null>(null)
     let [isComparing, setIsComparing] = React.useState<boolean>(false)
+    let showMessage = useContext(AlertContext) as AlertMessageFn
 
-    React.useEffect(() => {
-        if (first?.length && second?.length) {
-            compare.compare(JSON.parse(first), JSON.parse(second))
-                .then(data => setSummary(data.get() as IterableSummary)) 
-                .catch((e) => {console.log(e)})
-                .finally(() => setIsComparing(false))
-        } else {
+    const startComparison = () => React.startTransition(() => {
+        if (isComparing) {
             setIsComparing(false)
         }
-    }, [isComparing])
-
-    const startComparison = async () => React.startTransition(() => setIsComparing(true))
+        setIsComparing(true)
+    })
     const clearComparison = async () => React.startTransition(() => {
         setIsComparing(false)
         setFirst('')
         setSecond('')
         setSummary({} as IterableSummary)
     })
+    
+    React.useEffect(() => {
+        if (isComparing && first?.trim().length && second?.trim().length) {
+            try {
+                compare.compare(JSON.parse(first.trim()), JSON.parse(second.trim()))
+                    .then(data => setSummary(data.get() as IterableSummary)) 
+                    .catch((e) => {console.log(e)})
+                    .finally(() => setIsComparing(false))
+            } catch(e: any) {
+                showMessage({
+                    severity: AlertSeverity.Error,
+                    header: 'Error',
+                    message: e.message
+                })
+            } finally {
+                setIsComparing(false)
+            }
+        } else if (!first || !first.trim().length) {
+            showMessage({
+                severity: AlertSeverity.Info,
+                header: 'No JSON Input',
+                message: 'No JSON header input was defined for first JSON input.'
+            })
+            setIsComparing(false)
+        } else if (!second || !second.trim().length) {
+            showMessage({
+                severity: AlertSeverity.Info,
+                header: 'No JSON Input',
+                message: 'No JSON header input was defined for second JSON input.'
+            })
+            setIsComparing(false)
+        }
+    }, [isComparing])
 
     return (
         <>
