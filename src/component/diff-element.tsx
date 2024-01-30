@@ -152,6 +152,7 @@ export default function DiffElement(props: React.PropsWithoutRef<Info<Field>>): 
         return () => {}
     }, [childVisible])
 
+    console.log(props.showOnlyDifferences)
     if (!props.showOnlyDifferences || (props.showOnlyDifferences && props.diffResult !== DiffType.Same)) {
         return !props.hasOwnProperty('children') ? (
             <div className="flex w-full hover:bg-gray-100">
@@ -204,6 +205,7 @@ export default function DiffElement(props: React.PropsWithoutRef<Info<Field>>): 
                                 depth={(props?.depth ?? 0) + 1}
                                 filterKeyword={props.filterKeyword}
                                 collapsed={childVisible || false}
+                                showOnlyDifferences={props.showOnlyDifferences}
                             />
                         </div> :
                         <></>

@@ -13,6 +13,7 @@ export default function JsonDifference() {
     let [filter, setFilter] = React.useState<string | null>(null)
     let [isComparing, setIsComparing] = React.useState<boolean>(false)
     let [showDiffOnly, setShowDiffOnly] = React.useState<boolean>(false)
+
     let showMessage = useContext(AlertContext) as AlertMessageFn
 
     const startComparison = () => React.startTransition(() => {
@@ -128,7 +129,11 @@ export default function JsonDifference() {
                             onInput={(e) => setFilter((e.target as HTMLInputElement).value)}
                         />
                     </div>
-                    <DiffSummary {...summary} filterKeyword={filter || ''} showOnlyDifferences={showDiffOnly} />
+                    <DiffSummary 
+                        {...summary}
+                        filterKeyword={filter || ''}
+                        showOnlyDifferences={showDiffOnly}
+                    />
                 </div>
             </div>
         </>
