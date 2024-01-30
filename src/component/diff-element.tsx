@@ -28,6 +28,7 @@ function transformString(data: string): string | JSX.Element {
                     href={data} 
                     className="text-blue-400 underline visited:text-magenta-500"
                     target="_blank"
+                    rel="noreferrer"
                 >{data}</a>
                 {"\""}
             </>
