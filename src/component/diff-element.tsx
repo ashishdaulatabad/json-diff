@@ -152,10 +152,6 @@ export default function DiffElement(props: React.PropsWithoutRef<Info<Field>>): 
         (<><b>- {`[${props.fieldKey}]`}</b>&nbsp;</>) :
         (<><b>{props.fieldKey}</b>:&nbsp;</>)
 
-    React.useEffect(() => {
-        return () => {}
-    }, [childVisible])
-
     if (!props.showOnlyDifferences || (props.showOnlyDifferences && props.diffResult !== DiffType.Same)) {
         return !props.hasOwnProperty('children') ? (
             <div className="flex w-full hover:bg-gray-100">
