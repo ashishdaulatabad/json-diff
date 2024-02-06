@@ -38,16 +38,16 @@ function transformString(data: string): string | JSX.Element {
     return `"${data}"`
 }
 
-function transform(data: any, type: Type | undefined) {
-    switch (type) {
+function JSONPrimitiveValue(props: React.PropsWithRef<{ data: any, type: Type | undefined }>) {
+    switch (props.type) {
         case Type.String:
-            return transformString(data)
+            return transformString(props.data)
         case Type.Null:
             return 'null'
         case Type.Boolean:
-            return data ? 'true' : 'false'
+            return props.data ? 'true' : 'false'
         default:
-            return data
+            return props.data
     }
 }
 
@@ -100,22 +100,26 @@ function getStylesRight(props: Info<Field>) {
     return getStyleWithTypes(props.rightType)
 }
 
-function depthWidth(depth: number) {
-    return Array.from({length: depth}).map((_, index: number) => (
-         <div className="border-l border-gray-400 min-w-10" key={index}></div> 
-    ))
+function WidthSet(props: React.PropsWithoutRef<{depth: number}>) {
+    return (<> 
+        {Array.from({length: props.depth}).map((_, index: number) => (
+             <div className="border-l border-gray-400 min-w-10" key={index}></div> 
+        ))}
+    </>)
 }
 
-function collapsible(
-    type: Type,
-    visible: boolean, 
+interface CollapsibleType {
+    type: Type
+    visible: boolean
     setVisible: React.Dispatch<React.SetStateAction<boolean>>
-): JSX.Element {
-    if (Types.typeIsIterable(type)) {
+}
+
+function Collapsible(props: React.PropsWithRef<CollapsibleType>): JSX.Element {
+    if (Types.typeIsIterable(props.type)) {
         const visibleChange = async () => React.startTransition(() => {
-            setVisible(!visible)
+            props.setVisible(!props.visible)
         })
-        if (type === Type.Array) {
+        if (props.type === Type.Array) {
             return (<button 
                 className="px-2 py-0.25 w-full text-gray-500 flex"
                 onClick={visibleChange}
@@ -156,20 +160,20 @@ export default function DiffElement(props: React.PropsWithoutRef<Info<Field>>): 
         return !props.hasOwnProperty('children') ? (
             <div className="flex w-full hover:bg-gray-100">
                 <div className={css("w-full flex p-0.5", bgColorLeft(props.diffResult))}>
-                    {depthWidth(depth)}
+                    <WidthSet depth={depth} />
                     <div className="w-full">
                         {indexed}
                         <span className={getStylesLeft(props)}> 
-                            {transform(props.left, props.leftType)}
+                            <JSONPrimitiveValue data={props.left} type={props.leftType} />
                         </span>
                     </div>
                 </div>
                 <div className={css("w-full flex p-0.5", bgColorRight(props.diffResult))}>
-                    {depthWidth(depth)}
+                    <WidthSet depth={depth} />
                     <div className="w-full">
                         {indexed}
                         <span className={getStylesRight(props)}>
-                            {transform(props.right, props.rightType)}
+                            <JSONPrimitiveValue data={props.right} type={props.rightType} />
                         </span>
                     </div>
                 </div>
@@ -178,20 +182,36 @@ export default function DiffElement(props: React.PropsWithoutRef<Info<Field>>): 
             <div className="">
                 <div className="flex w-full hover:bg-gray-100">
                     <div className={css("w-full flex p-0.5", bgColorLeft(props.diffResult))}>
-                        {depthWidth(depth)}
+                        <WidthSet depth={depth} />
                         <div className="w-full flex">
                             {indexed}
                             <span className={getStylesLeft(props)}> 
-                                {!Types.typeIsIterable(props?.leftType as Type) ? transform(props.left, props.leftType) : collapsible(props.leftType as Type, childVisible, setChildVisible)}
+                                {
+                                    !Types.typeIsIterable(props?.leftType as Type) ? 
+                                        <JSONPrimitiveValue data={props.left} type={props.leftType} /> : 
+                                        <Collapsible 
+                                            type={props.leftType as Type}
+                                            visible={childVisible}
+                                            setVisible={setChildVisible}
+                                        />
+                                }
                             </span>
                         </div>
                     </div>
                     <div className={css("w-full flex p-0.5", bgColorRight(props.diffResult))}>
-                        {depthWidth(depth)}
+                        <WidthSet depth={depth} />
                         <div className="w-full flex">
                             {indexed}
                             <span className={css(getStylesRight(props))}>
-                                {!Types.typeIsIterable(props?.rightType as Type) ? transform(props.right, props.rightType) : collapsible(props.rightType as Type, childVisible, setChildVisible)}
+                                {
+                                    !Types.typeIsIterable(props?.rightType as Type) ? 
+                                        <JSONPrimitiveValue data={props.right} type={props.rightType} />: 
+                                        <Collapsible 
+                                            type={props.rightType as Type}
+                                            visible={childVisible}
+                                            setVisible={setChildVisible}
+                                        />
+                                }
                             </span>
                         </div>
                     </div>
