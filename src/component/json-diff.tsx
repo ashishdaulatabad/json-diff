@@ -3,8 +3,7 @@ import { IterableSummary } from '../models/interface'
 import compare from '../services/compare'
 import DiffSummary from './summary'
 import { Bars } from 'react-loader-spinner'
-import { AlertContext, AlertMessageFn } from '../providers/alerts'
-import { AlertSeverity } from './alerts'
+import { AlertContext } from '../providers/alerts'
 
 export default function JsonDifference() {
     let [first, setFirst] = React.useState<string | null>(null)
@@ -14,7 +13,7 @@ export default function JsonDifference() {
     let [isComparing, setIsComparing] = React.useState<boolean>(false)
     let [showDiffOnly, setShowDiffOnly] = React.useState<boolean>(false)
 
-    let showMessage = useContext(AlertContext) as AlertMessageFn
+    const { showError, showInfo } = useContext(AlertContext)
 
     const startComparison = () => React.startTransition(() => {
         if (isComparing) {
@@ -22,15 +21,17 @@ export default function JsonDifference() {
         }
         setIsComparing(true)
     })
+
     const clearComparison = async () => React.startTransition(() => {
         setIsComparing(false)
         setFirst('')
         setSecond('')
         setSummary({} as IterableSummary)
     })
-    const toggleShowDiff = () => React.startTransition(() => {
-        setShowDiffOnly(!showDiffOnly)
-    })
+
+    function toggleShowDiff() {
+        React.startTransition(() => setShowDiffOnly(!showDiffOnly))
+    }
     
     React.useEffect(() => {
         if (isComparing) {
@@ -38,11 +39,10 @@ export default function JsonDifference() {
                 try {
                     compare.compare(JSON.parse(first.trim()), JSON.parse(second.trim()))
                         .then(data => setSummary(data.get() as IterableSummary)) 
-                        .catch((e) => {console.log(e)})
+                        .catch(console.log)
                         .finally(() => setIsComparing(false))
                 } catch(e: any) {
-                    showMessage({
-                        severity: AlertSeverity.Error,
+                    showError({
                         header: 'Error',
                         message: e.message
                     })
@@ -50,15 +50,13 @@ export default function JsonDifference() {
                     setIsComparing(false)
                 }
             } else if (!first || !first.trim().length) {
-                showMessage({
-                    severity: AlertSeverity.Info,
+                showInfo({
                     header: 'No JSON Input',
                     message: 'No JSON header input was defined for first JSON input.'
                 })
                 setIsComparing(false)
             } else if (!second || !second.trim().length) {
-                showMessage({
-                    severity: AlertSeverity.Info,
+                showInfo({
                     header: 'No JSON Input',
                     message: 'No JSON header input was defined for second JSON input.'
                 })

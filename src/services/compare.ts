@@ -1,4 +1,3 @@
-import { argv0 } from 'process';
 import { Field, DiffType, CError, IterableSummary, Type } from '../models/interface';
 import { Error, Ok, Result } from '../utils/result';
 import Types from '../utils/types';
@@ -711,7 +710,10 @@ const compareSameIterableType = (
         case Type.Object:
             return compareTwoObjects(first, second, path, leftParentHierarchy, rightParentHierarchy, true)
 
-        default:
+        case Type.Array:
             return compareTwoArrays(first, second, path, leftParentHierarchy, rightParentHierarchy)
+
+        default:
+            return Error({ error: 'Unknown type for iterable type. Found ' + Types.type(first) })
     }
 }
