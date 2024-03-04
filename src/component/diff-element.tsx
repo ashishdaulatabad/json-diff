@@ -56,24 +56,24 @@ function JSONPrimitiveValue(
 function getStyleWithTypes(type: Type | undefined) {
     switch (type) {
         case Type.Null:
-            return 'text-red-800'
+            return 'text-red-800 dark:text-red-500'
         case Type.String:
-            return 'text-green-700 break-all'
+            return 'text-green-700 break-all dark:text-green-500'
         case Type.Boolean:
-            return 'text-purple-700'
+            return 'text-purple-700 dark:text-purple-400'
         case Type.Number:
-            return 'text-amber-800'
+            return 'text-amber-800 dark:text-number-400'
         default:
-            return 'text-gray-700'
+            return 'text-gray-700 dark:text-gray-400'
     }
 }
 
 function bgColorLeft(type: DiffType) {
     switch (type) {
         case DiffType.LeftOnly:
-            return 'bg-green-200 dark:bg-green-600'
+            return 'bg-green-200 dark:bg-green-800'
         case DiffType.RightOnly:
-            return 'bg-gray-200 dark:bg-gray-700'
+            return 'bg-gray-200 dark:bg-gray-800'
         case DiffType.Different:
             return 'bg-yellow-200 dark:bg-yellow-400'
         default:
@@ -84,9 +84,9 @@ function bgColorLeft(type: DiffType) {
 function bgColorRight(type: DiffType) {
     switch (type) {
         case DiffType.RightOnly:
-            return 'bg-red-200 dark:bg-red-600'
+            return 'bg-red-200 dark:bg-red-800'
         case DiffType.LeftOnly:
-            return 'bg-gray-200 dark:bg-gray-700'
+            return 'bg-gray-200 dark:bg-gray-800'
         case DiffType.Different:
             return 'bg-yellow-200 dark:bg-yellow-400'
         default:
