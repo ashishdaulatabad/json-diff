@@ -6,9 +6,8 @@ export function Navbar(props: React.PropsWithoutRef<{themeChanged: () => void}>)
         localStorage.theme = localStorage.theme === 'light' ? 'dark' : 'light'
         props.themeChanged()
     }
-    console.log('Rendering')
     return (
-        <div className="w-full border-b-2 border-black dark:border-white text-center shadow-lg p-7 font-bold flex justify-between uitems-center">
+        <div className="w-full border-b-2 border-gray-200 dark:border-gray-700 text-center shadow-lg p-7 font-bold flex justify-between uitems-center">
             <div className="self-center">JSON Comparison</div>
             <div className="ml-12">
                 <button onClick={click}>

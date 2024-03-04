@@ -75,7 +75,7 @@ export default function JsonDifference(): JSX.Element {
                         autoComplete="false"
                         spellCheck="false"
                         value={first ?? ''}
-                        className="w-full h-96 p-2 border border-gray-300 dark:bg-gray-900 resize-none focus:border-gray-400 focus:outline-none rounded-sm"
+                        className="w-full h-96 p-2 border border-gray-300 dark:bg-gray-900 dark:border-gray-700 resize-none focus:border-gray-400 focus:outline-none rounded-sm"
                         placeholder="Enter your first JSON object"
                         onInput={(e) => setFirst((e.target as HTMLTextAreaElement).value)}
                     >
@@ -86,7 +86,7 @@ export default function JsonDifference(): JSX.Element {
                         autoComplete="false"
                         spellCheck="false"
                         value={second ?? ''}
-                        className="w-full h-96 p-2 border border-gray-300 dark:bg-gray-900 resize-none focus:border-gray-400 focus:outline-none rounded-sm"
+                        className="w-full h-96 p-2 border border-gray-300 dark:bg-gray-900 dark:border-gray-700 resize-none focus:border-gray-400 focus:outline-none rounded-sm"
                         placeholder="Enter your second JSON object"
                         onInput={(e) => setSecond((e.target as HTMLTextAreaElement).value)}
                     >
@@ -95,18 +95,18 @@ export default function JsonDifference(): JSX.Element {
             </div>
             <div className="flex flex-row justify-center items-center mb-8">
                 <button
-                    className={"bg-white dark:bg-black border border-black dark:border-white border-b-4 border-r-4 px-8 py-2 rounded-sm active:border-b-8 ease-in-out transition-all duration-50 active:bg-gray-100"}
+                    className="bg-white dark:bg-gray-900 border border-gray-300 shadow-lg dark:shadow-black dark:border-gray-700 border-b-4 border-r-4 px-8 py-2 rounded-sm active:border-b-8 ease-in-out transition-all duration-50 active:bg-gray-100"
                     onClick={startComparison}
                 >
                     {(isComparing ? <Bars width={30} height={30} color={"black"} /> : "Compare")} {isComparing}
                 </button>
                 <button
-                    className="bg-white dark:bg-black border border-black dark:border-white border-b-4 border-r-4 px-8 py-2 rounded-sm active:border-b-8 ease-in-out transition-all duration-50 active:bg-gray-100 ml-10"
+                    className="bg-white dark:bg-gray-900 border border-gray-300 shadow-lg dark:shadow-black dark:border-gray-700 border-b-4 border-r-4 px-8 py-2 rounded-sm active:border-b-8 ease-in-out transition-all duration-50 active:bg-gray-100 ml-10"
                     onClick={clearComparison}
                 >Clear</button>
             </div>
             <div className="summary p-10 flex justify-center items-center">
-                <div className="items-start text-left w-4/5 p-8 border-t-2 border-l-2 border-black dark:border-white border-r-8 border-b-8">
+                <div className="items-start text-left w-4/5 p-8 border-t-2 border-l-2 border-gray-300 shadow-lg dark:shadow-black dark:border-gray-700 border-r-8 border-b-8">
                     <div className="w-full">
                         <input
                             value={showDiffOnly ? 1 : 0}
@@ -124,7 +124,7 @@ export default function JsonDifference(): JSX.Element {
                     </div>
                     <div className="w-full mb-10 mt-3">
                         <input 
-                            className="py-2 px-3 w-full rounded-sm border border-r-4 border-b-4 border-black dark:bg-black dark:border-white active:outline-none"
+                            className="py-2 px-3 w-full rounded-sm border border-r-4 border-b-4 border-gray-300 shadow-lg dark:border-gray-700 dark:bg-gray-800 dark:shadow-black active:outline-none"
                             placeholder="Search keywords to filter (Does not work)"
                             onInput={(e) => setFilter((e.target as HTMLInputElement).value)}
                         />

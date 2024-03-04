@@ -18,7 +18,7 @@ function theme() {
 function App() {
     theme()
     return (
-        <div className="App font-mono dark:bg-black dark:text-white">
+        <div className="App font-mono dark:bg-gray-900 dark:text-gray-400">
             <Navbar themeChanged={theme}  />
             <AlertProvider>
                 <div>

@@ -4,7 +4,7 @@ export default {
     darkMode: 'selector',
     theme: {
         fontFamily: {
-            mono: ['Roboto Mono', 'serif']
+            mono: ['Roboto Mono', 'monospace', 'sans-serif']
         },
         extend: {}
     },
