@@ -38,7 +38,9 @@ function transformString(data: string): string | JSX.Element {
     return `"${data}"`
 }
 
-function JSONPrimitiveValue(props: React.PropsWithRef<{ data: any, type: Type | undefined }>) {
+function JSONPrimitiveValue(
+    props: React.PropsWithRef<{ data: any, type: Type | undefined }>
+) {
     switch (props.type) {
         case Type.String:
             return transformString(props.data)
@@ -100,7 +102,7 @@ function getStylesRight(props: Info<Field>) {
     return getStyleWithTypes(props.rightType)
 }
 
-function WidthSet(props: React.PropsWithoutRef<{depth: number}>) {
+function WidthSet(props: React.PropsWithoutRef<{depth: number}>): JSX.Element {
     return (<> 
         {Array.from({length: props.depth}).map((_, index: number) => (
              <div className="border-l border-gray-400 min-w-10" key={index}></div> 

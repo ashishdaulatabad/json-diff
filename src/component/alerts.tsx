@@ -31,8 +31,8 @@ export interface AlertHtml extends AlertBase {
 
 export type Alert = AlertText | AlertHtml
 
-export function Icon(sev: AlertSeverity) {
-    switch (sev) {
+function Icon(props: React.PropsWithoutRef<{ severity: AlertSeverity }>): JSX.Element {
+    switch (props.severity) {
       case AlertSeverity.Warning:
           return <ExclamationTriangleIcon />
       case AlertSeverity.Success:
@@ -44,7 +44,7 @@ export function Icon(sev: AlertSeverity) {
     }
 }
 
-export function ClassSeverity(sev: AlertSeverity) {
+function ClassSeverity(sev: AlertSeverity): string {
     switch (sev) {
         case AlertSeverity.Success:
             return 'bg-green-600'
@@ -59,27 +59,29 @@ export function ClassSeverity(sev: AlertSeverity) {
     }
 }
 
-export let setShowState: any  = null
+export let setShowState: any = null
 
 /**
  * @description Notification description
  */
-export function ShowAlert(props: React.PropsWithoutRef<{ show: Alert }>) {
+export function ShowAlert(props: React.PropsWithoutRef<{ show: Alert }>): JSX.Element {
     let className = 'flex justify-center flex-col top-0 left-0 w-full h-28 text-white text-center rounded-s shadow-lg shadow-gray-300 font-mono ease-in-out transition-all fixed'
 
     const [showState, setSState] = React.useState<boolean>(false)
     setShowState = setSState
     
     React.useEffect(() => {
-        let clearIntervalId: NodeJS.Timeout
+        let clearTimeoutId: NodeJS.Timeout
         if (showState && !props.show.sticky) {
-            clearIntervalId = setTimeout(() => setSState(false), props.show.lifems || 3000)
+            clearTimeoutId = setTimeout(
+                () => setSState(false), 
+                props.show.lifems || 3000
+            )
         }
 
-        return () => { clearIntervalId && clearInterval(clearIntervalId) }
+        return () => { clearTimeoutId && clearTimeout(clearTimeoutId) }
     })
 
-    const Ic = Icon(props.show.severity)
     return (
         <div className={
             className + 
@@ -93,7 +95,7 @@ export function ShowAlert(props: React.PropsWithoutRef<{ show: Alert }>) {
             </div>
             <div className="flex flex-row justify-center header">
                 <div className="icon w-11 flex flex-col justify-center text-center">
-                    {Ic} 
+                    <Icon severity={props.show.severity} />
                 </div>
                 <div className="ml-5 text-left">
                     <h1 className="font-bold">{props.show.header}</h1>

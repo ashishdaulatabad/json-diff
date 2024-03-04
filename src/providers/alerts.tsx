@@ -3,6 +3,7 @@ import { Alert, ShowAlert, setShowState, AlertSeverity } from '../component/aler
 
 export type AlertMessageFn = (alert: Alert, forceShow?: boolean) => void
 export type AlertMessageNoSeverityFn = (alert: Omit<Alert, 'severity'>, forceShow?: boolean) => void
+
 export interface AlertsInfo {
     showMessage: AlertMessageFn
     showSuccess: AlertMessageNoSeverityFn
@@ -12,7 +13,7 @@ export interface AlertsInfo {
     showCustom: AlertMessageNoSeverityFn
 }
 
-// Show Message to the user
+/// Context to show message to the user
 export const AlertContext = React.createContext<AlertsInfo>({} as AlertsInfo)
 
 /**

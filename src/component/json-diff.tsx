@@ -5,7 +5,7 @@ import DiffSummary from './summary'
 import { Bars } from 'react-loader-spinner'
 import { AlertContext } from '../providers/alerts'
 
-export default function JsonDifference() {
+export default function JsonDifference(): JSX.Element {
     let [first, setFirst] = React.useState<string | null>(null)
     let [second, setSecond] = React.useState<string | null>(null)
     let [summary, setSummary] = React.useState<IterableSummary>({} as IterableSummary)
@@ -22,7 +22,7 @@ export default function JsonDifference() {
         setIsComparing(true)
     })
 
-    const clearComparison = async () => React.startTransition(() => {
+    const clearComparison = () => React.startTransition(() => {
         setIsComparing(false)
         setFirst('')
         setSecond('')
@@ -54,12 +54,14 @@ export default function JsonDifference() {
                     header: 'No JSON Input',
                     message: 'No JSON header input was defined for first JSON input.'
                 })
+
                 setIsComparing(false)
             } else if (!second || !second.trim().length) {
                 showInfo({
                     header: 'No JSON Input',
                     message: 'No JSON header input was defined for second JSON input.'
                 })
+
                 setIsComparing(false)
             }
         }

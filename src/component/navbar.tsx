@@ -1,7 +1,7 @@
 import React from 'react'
 import LightBulbIcon from '@heroicons/react/24/solid/LightBulbIcon'
 
-export function Navbar() {
+export function Navbar(): JSX.Element {
     return (
         <div className="w-full border-b-2 border-black text-center shadow-lg p-7 font-mono font-bold flex justify-between uitems-center">
             <div className="self-center">JSON Comparison</div>
