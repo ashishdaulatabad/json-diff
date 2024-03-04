@@ -65,7 +65,7 @@ export let setShowState: any = null
  * @description Notification description
  */
 export function ShowAlert(props: React.PropsWithoutRef<{ show: Alert }>): JSX.Element {
-    let className = 'flex justify-center flex-col top-0 left-0 w-full h-28 text-white text-center rounded-s shadow-lg shadow-gray-300 font-mono ease-in-out transition-all fixed'
+    let className = 'flex justify-center flex-col top-0 left-0 w-full h-28 text-white text-center rounded-s shadow-lg shadow-gray-300 ease-in-out transition-all fixed'
 
     const [showState, setSState] = React.useState<boolean>(false)
     setShowState = setSState
@@ -85,7 +85,7 @@ export function ShowAlert(props: React.PropsWithoutRef<{ show: Alert }>): JSX.El
     return (
         <div className={
             className + 
-            (showState ? ' translate-y-0 opacity-100' : ' -translate-y-8 opacity-0') +
+            (showState ? ' translate-y-0 opacity-100' : ' -translate-y-24 opacity-0') +
             (' ' + ClassSeverity(props.show.severity))
         }>
             <div className="flex fixed w-full justify-end">

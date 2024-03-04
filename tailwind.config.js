@@ -1,9 +1,12 @@
 /** @type {import('tailwindcss').Config} */
 export default {
     content: ['./src/*.{html,ts,tsx}', './src/**/*.{html,ts,tsx}'],
-    darkMode: 'class',
+    darkMode: 'selector',
     theme: {
-        extend: {},
+        fontFamily: {
+            mono: ['Roboto Mono', 'serif']
+        },
+        extend: {}
     },
-    plugins: [],
+    plugins: []
 };

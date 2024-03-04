@@ -71,11 +71,11 @@ function getStyleWithTypes(type: Type | undefined) {
 function bgColorLeft(type: DiffType) {
     switch (type) {
         case DiffType.LeftOnly:
-            return 'bg-green-200'
+            return 'bg-green-200 dark:bg-green-600'
         case DiffType.RightOnly:
-            return 'bg-gray-200'
+            return 'bg-gray-200 dark:bg-gray-700'
         case DiffType.Different:
-            return 'bg-yellow-200'
+            return 'bg-yellow-200 dark:bg-yellow-400'
         default:
             return ''
     }
@@ -84,11 +84,11 @@ function bgColorLeft(type: DiffType) {
 function bgColorRight(type: DiffType) {
     switch (type) {
         case DiffType.RightOnly:
-            return 'bg-red-200'
+            return 'bg-red-200 dark:bg-red-600'
         case DiffType.LeftOnly:
-            return 'bg-gray-200'
+            return 'bg-gray-200 dark:bg-gray-700'
         case DiffType.Different:
-            return 'bg-yellow-200'
+            return 'bg-yellow-200 dark:bg-yellow-400'
         default:
             return ''
     }
@@ -178,7 +178,7 @@ export default function DiffElement(props: React.PropsWithoutRef<Info<Field>>): 
             </div>
         ) : (
             <div className="">
-                <div className="flex w-full hover:bg-gray-100">
+                <div className="flex w-full hover:bg-gray-100 dark:hover:bg-gray-700">
                     <div className={css("w-full flex p-0.5", bgColorLeft(props.diffResult))}>
                         <WidthSet depth={depth} />
                         <div className="w-full flex">

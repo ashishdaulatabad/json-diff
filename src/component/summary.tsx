@@ -14,7 +14,7 @@ export default function DiffSummary(props: React.PropsWithRef<Info<IterableSumma
         />
     ))
     return (
-        <div className="items-start font-mono text-left w-full">
+        <div className="items-start text-left w-full">
             {summary}
         </div>
     )
