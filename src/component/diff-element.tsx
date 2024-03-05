@@ -113,6 +113,7 @@ function WidthSet(props: React.PropsWithoutRef<{depth: number}>): JSX.Element {
 interface CollapsibleType {
     type: Type
     visible: boolean
+    showEllipsis: boolean
     setVisible: React.Dispatch<React.SetStateAction<boolean>>
 }
 
@@ -121,13 +122,14 @@ function Collapsible(props: React.PropsWithRef<CollapsibleType>): JSX.Element {
         const visibleChange = async () => React.startTransition(() => {
             props.setVisible(!props.visible)
         })
+        console.log(props)
         if (props.type === Type.Array) {
             return (<button 
                 className="px-2 py-0.25 w-full text-gray-500 flex"
                 onClick={visibleChange}
             >
                 <div data-before="[" className="before:content-[attr(data-before)]"></div>
-                <div>...</div>
+                {props.showEllipsis ? <div>...</div> : <></>}
                 <div data-before="]" className="before:content-[attr(data-before)]"></div>
             </button>)
         } else {
@@ -136,7 +138,7 @@ function Collapsible(props: React.PropsWithRef<CollapsibleType>): JSX.Element {
                 onClick={visibleChange}
             >
                 <div data-before="{" className="before:content-[attr(data-before)]"></div>
-                <div>...</div>
+                {props.showEllipsis ? <div>...</div> : <></>}
                 <div data-before="}" className="before:content-[attr(data-before)]"></div>
             </button>)
         }
@@ -187,7 +189,8 @@ export default function DiffElement(props: React.PropsWithoutRef<Info<Field>>): 
                                 {
                                     !Types.typeIsIterable(props?.leftType as Type) ? 
                                         <JSONPrimitiveValue data={props.left} type={props.leftType} /> : 
-                                        <Collapsible 
+                                        <Collapsible
+                                            showEllipsis={props.children!.summary!.length > 0}
                                             type={props.leftType as Type}
                                             visible={childVisible}
                                             setVisible={setChildVisible}
@@ -205,6 +208,7 @@ export default function DiffElement(props: React.PropsWithoutRef<Info<Field>>): 
                                     !Types.typeIsIterable(props?.rightType as Type) ? 
                                         <JSONPrimitiveValue data={props.right} type={props.rightType} />: 
                                         <Collapsible 
+                                            showEllipsis={props.children!.summary!.length > 0}
                                             type={props.rightType as Type}
                                             visible={childVisible}
                                             setVisible={setChildVisible}
