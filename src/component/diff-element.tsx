@@ -122,7 +122,6 @@ function Collapsible(props: React.PropsWithRef<CollapsibleType>): JSX.Element {
         const visibleChange = async () => React.startTransition(() => {
             props.setVisible(!props.visible)
         })
-        console.log(props)
         if (props.type === Type.Array) {
             return (<button 
                 className="px-2 py-0.25 w-full text-gray-500 flex"

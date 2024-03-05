@@ -45,7 +45,8 @@ export default {
 
 
     eqType(first: any, second: any): boolean {
-        return first === second || first.constructor === second.constructor;
+        if (first === null || first === undefined) return first === second
+        return first === second || first?.constructor === second?.constructor
     },
 
     /**
