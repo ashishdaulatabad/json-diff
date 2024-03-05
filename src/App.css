@@ -2,6 +2,8 @@
     text-align: center;
     /* scroll-behavior: smooth; */
     /* overflow: scroll; */
+    min-height: 100vh;
+    min-width: 100vw;
 }
 
 .App-logo {
