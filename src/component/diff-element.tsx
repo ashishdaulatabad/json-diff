@@ -156,7 +156,7 @@ export default function DiffElement(props: React.PropsWithoutRef<Info<Field>>): 
 
     if (!props.showOnlyDifferences || (props.showOnlyDifferences && props.diffResult !== DiffType.Same)) {
         return !props.hasOwnProperty('children') ? (
-            <div className="flex w-full hover:bg-gray-800">
+            <div className="flex w-full hover:bg-gray-100 dark:hover:bg-gray-800">
                 <div className={css("w-full flex p-0.5", bgColorLeft(props.diffResult))}>
                     <WidthSet depth={depth} />
                     <div className="w-full">
