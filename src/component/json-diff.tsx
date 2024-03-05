@@ -106,34 +106,38 @@ export default function JsonDifference(): JSX.Element {
                 >Clear</button>
             </div>
             <div className="summary p-10 flex justify-center items-center">
-                <div className="items-start text-left w-4/5 p-8 border-t-2 border-l-2 border-gray-300 shadow-lg dark:shadow-black dark:border-gray-700 border-r-8 border-b-8 max-h-screen overflow-y-scroll scrollbar-thumb-gray-200 dark:scrollbar-thumb-gray-800 scrollbar-thin scrollbar-thumb-rounded-md">
-                    <div className="w-full">
-                        <input
-                            value={showDiffOnly ? 1 : 0}
-                            name="changes"
-                            id="changes"
-                            type="checkbox"
-                            className="scale-150"
-                            onClick={toggleShowDiff}
-                        />
-                        <label
-                            onClick={toggleShowDiff}
-                            htmlFor="changes" 
-                            className="ml-3"
-                        >Show Only Changes</label>
+                <div className="flex flex-col items-start text-left w-4/5 p-8 border-t-2 border-l-2 border-gray-300 shadow-lg dark:shadow-black dark:border-gray-700 border-r-8 border-b-8 max-h-screen">
+                    <div className="w-full sticky">
+                        <div className="w-full">
+                            <input
+                                value={showDiffOnly ? 1 : 0}
+                                name="changes"
+                                id="changes"
+                                type="checkbox"
+                                className="scale-150"
+                                onClick={toggleShowDiff}
+                            />
+                            <label
+                                onClick={toggleShowDiff}
+                                htmlFor="changes" 
+                                className="ml-3"
+                            >Show Only Changes</label>
+                        </div>
+                        <div className="w-full mb-10 mt-3">
+                            <input 
+                                className="py-2 px-3 w-full rounded-sm border border-r-4 border-b-4 border-gray-300 shadow-lg dark:border-gray-700 dark:bg-gray-800 dark:shadow-black active:outline-none"
+                                placeholder="Search keywords to filter (Does not work)"
+                                onInput={(e) => setFilter((e.target as HTMLInputElement).value)}
+                            />
+                        </div>
                     </div>
-                    <div className="w-full mb-10 mt-3">
-                        <input 
-                            className="py-2 px-3 w-full rounded-sm border border-r-4 border-b-4 border-gray-300 shadow-lg dark:border-gray-700 dark:bg-gray-800 dark:shadow-black active:outline-none"
-                            placeholder="Search keywords to filter (Does not work)"
-                            onInput={(e) => setFilter((e.target as HTMLInputElement).value)}
+                    <div className="w-full overflow-y-scroll scrollbar-thumb-gray-200 dark:scrollbar-thumb-gray-600 scrollbar-track-gray-300 dark:scrollbar-track-gray-800 scrollbar-thin">
+                        <DiffSummary 
+                            {...summary}
+                            filterKeyword={filter || ''}
+                            showOnlyDifferences={showDiffOnly}
                         />
                     </div>
-                    <DiffSummary 
-                        {...summary}
-                        filterKeyword={filter || ''}
-                        showOnlyDifferences={showDiffOnly}
-                    />
                 </div>
             </div>
         </>
