@@ -1,5 +1,6 @@
 import React from 'react'
 import XMarkIcon from '@heroicons/react/24/solid/XMarkIcon'
+import XCircleIcon from '@heroicons/react/24/solid/XCircleIcon'
 import CheckBadge from '@heroicons/react/24/solid/CheckBadgeIcon' 
 import ExclamationTriangleIcon from '@heroicons/react/24/solid/ExclamationTriangleIcon'
 import InformationCircleIcon from '@heroicons/react/24/solid/InformationCircleIcon'
@@ -38,7 +39,7 @@ function Icon(props: React.PropsWithoutRef<{ severity: AlertSeverity }>): JSX.El
       case AlertSeverity.Success:
           return <CheckBadge />
       case AlertSeverity.Error:
-          return <XMarkIcon />
+          return <XCircleIcon />
       default:
           return <InformationCircleIcon />
     }
@@ -65,7 +66,7 @@ export let setShowState: any = null
  * @description Notification description
  */
 export function ShowAlert(props: React.PropsWithoutRef<{ show: Alert }>): JSX.Element {
-    let className = 'flex justify-center flex-col top-0 left-0 w-full h-28 text-white text-center rounded-s shadow-lg shadow-gray-300 ease-in-out transition-all fixed'
+    let className = 'flex justify-center flex-col top-0 left-0 w-full h-28 text-white text-center rounded-s shadow-lg ease-in-out transition-all fixed'
 
     const [showState, setSState] = React.useState<boolean>(false)
     setShowState = setSState
@@ -89,7 +90,7 @@ export function ShowAlert(props: React.PropsWithoutRef<{ show: Alert }>): JSX.El
             (' ' + ClassSeverity(props.show.severity))
         }>
             <div className="flex fixed w-full justify-end">
-                <div className="top-0 w-8 rounded-full transition-all ease-in hover:shadow-md hover:shadow-white">
+                <div className="top-0 w-8 rounded-full border transition-all ease-in mr-10">
                   <XMarkIcon onClick={(_) => setSState(false)}/>
                 </div>
             </div>
