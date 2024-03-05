@@ -75,7 +75,7 @@ export default function JsonDifference(): JSX.Element {
                         autoComplete="false"
                         spellCheck="false"
                         value={first ?? ''}
-                        className="w-full h-96 p-2 border border-gray-300 dark:bg-gray-900 dark:border-gray-700 resize-none focus:border-gray-400 focus:outline-none rounded-sm"
+                        className="w-full h-96 p-2 border border-gray-300 dark:bg-gray-900 dark:border-gray-700 resize-none focus:border-gray-400 focus:outline-none rounded-sm scrollbar-thumb-gray-200 dark:scrollbar-thumb-gray-800 scrollbar-thin scrollbar-thumb-rounded-md"
                         placeholder="Enter your first JSON object"
                         onInput={(e) => setFirst((e.target as HTMLTextAreaElement).value)}
                     >
@@ -86,7 +86,7 @@ export default function JsonDifference(): JSX.Element {
                         autoComplete="false"
                         spellCheck="false"
                         value={second ?? ''}
-                        className="w-full h-96 p-2 border border-gray-300 dark:bg-gray-900 dark:border-gray-700 resize-none focus:border-gray-400 focus:outline-none rounded-sm"
+                        className="w-full h-96 p-2 border border-gray-300 dark:bg-gray-900 dark:border-gray-700 resize-none focus:border-gray-400 focus:outline-none rounded-sm scrollbar-thumb-gray-200 dark:scrollbar-thumb-gray-800 scrollbar-thin scrollbar-thumb-rounded-md"
                         placeholder="Enter your second JSON object"
                         onInput={(e) => setSecond((e.target as HTMLTextAreaElement).value)}
                     >
@@ -106,7 +106,7 @@ export default function JsonDifference(): JSX.Element {
                 >Clear</button>
             </div>
             <div className="summary p-10 flex justify-center items-center">
-                <div className="items-start text-left w-4/5 p-8 border-t-2 border-l-2 border-gray-300 shadow-lg dark:shadow-black dark:border-gray-700 border-r-8 border-b-8">
+                <div className="items-start text-left w-4/5 p-8 border-t-2 border-l-2 border-gray-300 shadow-lg dark:shadow-black dark:border-gray-700 border-r-8 border-b-8 max-h-screen overflow-y-scroll scrollbar-thumb-gray-200 dark:scrollbar-thumb-gray-800 scrollbar-thin scrollbar-thumb-rounded-md">
                     <div className="w-full">
                         <input
                             value={showDiffOnly ? 1 : 0}

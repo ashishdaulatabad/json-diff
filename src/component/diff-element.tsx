@@ -56,13 +56,13 @@ function JSONPrimitiveValue(
 function getStyleWithTypes(type: Type | undefined) {
     switch (type) {
         case Type.Null:
-            return 'text-red-800 dark:text-red-500'
+            return 'text-red-800 dark:text-red-400'
         case Type.String:
-            return 'text-green-700 break-all dark:text-green-500'
+            return 'text-green-700 break-all dark:text-green-400'
         case Type.Boolean:
             return 'text-purple-700 dark:text-purple-400'
         case Type.Number:
-            return 'text-amber-800 dark:text-number-400'
+            return 'text-amber-800 dark:text-amber-400'
         default:
             return 'text-gray-700 dark:text-gray-400'
     }

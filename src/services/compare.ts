@@ -7,7 +7,7 @@ export default {
      * @description Compares the two JSON object
      * @todo: To return a promise instead of array of fields
      */
-    compare: function (
+    compare: async function (
         first: any,
         second: any,
     ): Promise<Result<IterableSummary, CError>> {
