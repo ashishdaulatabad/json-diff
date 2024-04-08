@@ -21,22 +21,83 @@ export default {
             if (firstType === secondType) {
                 if (Types.typeIsIterable(firstType) && Types.typeIsIterable(secondType)) {
                     resolve(compareSameIterableType(first, second, [], new Set(), new Set()))
-                } else if (Types.typeIsIterable(firstType) || Types.typeIsIterable(secondType)) {
-                    const [element, side] = Types.typeIsIterable(firstType) ? 
-                        [first, 'left'] : [second, 'right']
-                    resolve(constructOneSidedIterableType(element, [], side as ('left' | 'right'), new Set())) 
+                } else {
+                    resolve(compareTwoNonIterableTypes(first, second))
                 }
             } else {
                 if (Types.typeIsIterable(firstType) && Types.typeIsIterable(secondType)) {
                     resolve(compareDifferentIterableTypes(first, second, [], new Set(), new Set()))
                 } else if (Types.typeIsIterable(firstType) || Types.typeIsIterable(secondType)) {
-                    const [element, side] = Types.typeIsIterable(firstType) ? 
-                        [first, 'left'] : [second, 'right']
-                    resolve(constructOneSidedIterableType(element, [], side as ('left' | 'right'), new Set())) 
+                    const side: 'left' | 'right' = Types.typeIsIterable(firstType) ? 
+                        'left' : 'right'
+                    resolve(compareOneSidedNonIterableTypes(first, second, side)) 
+                } else {
+                    resolve(compareTwoNonIterableTypes(first, second))
                 }
             }
         });
     },
+}
+
+/**
+ * Compares two non-iterable types as an object
+ * @param first first item to compare
+ * @param second second item to compare
+ * @returns Result<IterableSummary, CError>: Summary of the comparison
+ */
+const compareTwoNonIterableTypes = (
+    first: any,
+    second: any
+): Result<IterableSummary, CError> => {
+    return Ok({
+        isSame: first === second,
+        summary: [{
+            fieldKey: null,
+            path: null,
+            diffResult: first === second ? DiffType.Same : DiffType.Different,
+            left: first,
+            right: second,
+            leftType: Types.ftype(first),
+            rightType: Types.ftype(second)
+        }]
+    })
+}
+
+/**
+ * Compares two non-iterable types as an object
+ * @param first first item to compare
+ * @param second second item to compare
+ * @returns Result<IterableSummary, CError>: Summary of the comparison
+ */
+const compareOneSidedNonIterableTypes = (
+    first: any,
+    second: any,
+    iterableSide: 'left' | 'right'
+): Result<IterableSummary, CError> => {
+    const summary: Array<Field> = [{
+        fieldKey: null,
+        path: null,
+        diffResult: first === second ? DiffType.Same : DiffType.Different,
+        left: first,
+        right: second,
+        leftType: Types.ftype(first),
+        rightType: Types.ftype(second)
+    }]
+
+    let oneSide = iterableSide === 'left' ? first : second
+
+    let remSummary = constructOneSidedIterableType(oneSide, [], iterableSide, new Set())
+
+    if (remSummary.ok()) {
+        let remSummaryContent = remSummary.get() as IterableSummary
+        let remSummaryArray = remSummaryContent.summary as Array<Field>;
+        return Ok({
+            isSame: false,
+            summary: summary.concat(remSummaryArray)
+        })
+    } else {
+        return remSummary
+    }
 }
 
 /**
@@ -73,7 +134,6 @@ const compareTwoArrays = (
                         : DiffType.Different
                 different += diffResult === DiffType.Different ? 1 : 0
                 same += diffResult === DiffType.Different ? 1 : 0
-
 
                 diffSummary.push({
                     diffResult,

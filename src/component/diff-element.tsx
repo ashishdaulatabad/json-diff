@@ -151,9 +151,10 @@ export default function DiffElement(props: React.PropsWithoutRef<Info<Field>>): 
     let [childVisible, setChildVisible] = React.useState<boolean>(props.collapsed ?? true)
     /// To do: Something with props.children
     const depth = props.depth as number
-    const indexed = Types.ftype(props.fieldKey) === Type.Number ?
+    const fieldType = Types.ftype(props.fieldKey);
+    const indexed = fieldType === Type.Number ?
         (<><b>- {`[${props.fieldKey}]`}</b>&nbsp;</>) :
-        (<><b>{props.fieldKey}</b>:&nbsp;</>)
+        (fieldType === Type.String ? (<><b>{props.fieldKey}</b>:&nbsp;</> ): (<></>))
 
     if (!props.showOnlyDifferences || (props.showOnlyDifferences && props.diffResult !== DiffType.Same)) {
         return !props.hasOwnProperty('children') ? (

@@ -39,9 +39,9 @@ export type Info<Type> = {
 }
 
 export interface Field {
-    fieldKey: string | number
+    fieldKey: string | number | null
     diffResult: DiffType
-    path: Array<string | number>
+    path: Array<string | number> | null
     leftType?: Type
     rightType?: Type
     left?: any
