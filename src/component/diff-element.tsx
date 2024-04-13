@@ -48,8 +48,10 @@ function JSONPrimitiveValue(
             return 'null'
         case Type.Boolean:
             return props.data ? 'true' : 'false'
-        default:
+        case Type.Number:
             return props.data
+        default:
+            return null
     }
 }
 
@@ -146,15 +148,25 @@ function Collapsible(props: React.PropsWithRef<CollapsibleType>): JSX.Element {
     }
 }
 
+function Key(
+    props: React.PropsWithChildren<{fieldType: Type, fieldKey: string | number | null}>
+): JSX.Element {
+    switch (props.fieldType) {
+        case Type.Number:
+            return (<><b>- {`[${props.fieldKey}]`}</b>&nbsp;</>)
+        case Type.String:
+            return (<><b>{props.fieldKey}</b>:&nbsp;</>)
+        default:
+            return <></>
+    }
+}
+
 export default function DiffElement(props: React.PropsWithoutRef<Info<Field>>): JSX.Element {
     // To do: use this
     let [childVisible, setChildVisible] = React.useState<boolean>(props.collapsed ?? true)
     /// To do: Something with props.children
     const depth = props.depth as number
     const fieldType = Types.ftype(props.fieldKey);
-    const indexed = fieldType === Type.Number ?
-        (<><b>- {`[${props.fieldKey}]`}</b>&nbsp;</>) :
-        (fieldType === Type.String ? (<><b>{props.fieldKey}</b>:&nbsp;</> ): (<></>))
 
     if (!props.showOnlyDifferences || (props.showOnlyDifferences && props.diffResult !== DiffType.Same)) {
         return !props.hasOwnProperty('children') ? (
@@ -162,7 +174,7 @@ export default function DiffElement(props: React.PropsWithoutRef<Info<Field>>): 
                 <div className={css("w-full flex p-0.5", bgColorLeft(props.diffResult))}>
                     <WidthSet depth={depth} />
                     <div className="w-full">
-                        {indexed}
+                        <Key fieldKey={props.fieldKey} fieldType={fieldType} />
                         <span className={getStylesLeft(props)}> 
                             <JSONPrimitiveValue data={props.left} type={props.leftType} />
                         </span>
@@ -171,7 +183,7 @@ export default function DiffElement(props: React.PropsWithoutRef<Info<Field>>): 
                 <div className={css("w-full flex p-0.5", bgColorRight(props.diffResult))}>
                     <WidthSet depth={depth} />
                     <div className="w-full">
-                        {indexed}
+                        <Key fieldKey={props.fieldKey} fieldType={fieldType} />
                         <span className={getStylesRight(props)}>
                             <JSONPrimitiveValue data={props.right} type={props.rightType} />
                         </span>
@@ -184,7 +196,7 @@ export default function DiffElement(props: React.PropsWithoutRef<Info<Field>>): 
                     <div className={css("w-full flex p-0.5", bgColorLeft(props.diffResult))}>
                         <WidthSet depth={depth} />
                         <div className="w-full flex">
-                            {indexed}
+                            <Key fieldKey={props.fieldKey} fieldType={fieldType} />
                             <span className={getStylesLeft(props)}> 
                                 {
                                     !Types.typeIsIterable(props?.leftType as Type) ? 
@@ -202,7 +214,7 @@ export default function DiffElement(props: React.PropsWithoutRef<Info<Field>>): 
                     <div className={css("w-full flex p-0.5", bgColorRight(props.diffResult))}>
                         <WidthSet depth={depth} />
                         <div className="w-full flex">
-                            {indexed}
+                            <Key fieldKey={props.fieldKey} fieldType={fieldType} />
                             <span className={css(getStylesRight(props))}>
                                 {
                                     !Types.typeIsIterable(props?.rightType as Type) ? 

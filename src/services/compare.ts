@@ -545,7 +545,6 @@ const compareTwoObjects = (
                     })
                 }
                 parentHierarchy.add(element)
-                // console.log(element, Types.is)
                 const inner = constructOneSidedIterableType(
                     element,
                     path.concat([key]),

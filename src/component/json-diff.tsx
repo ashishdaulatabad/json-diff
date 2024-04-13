@@ -78,8 +78,7 @@ export default function JsonDifference(): JSX.Element {
                         className="w-full h-96 p-2 border border-gray-300 dark:bg-gray-900 dark:border-gray-700 resize-none focus:border-gray-400 focus:outline-none rounded-sm scrollbar-thumb-gray-200 dark:scrollbar-thumb-gray-800 scrollbar-thin scrollbar-thumb-rounded-md"
                         placeholder="Enter your first JSON object"
                         onInput={(e) => setFirst((e.target as HTMLTextAreaElement).value)}
-                    >
-                    </textarea>
+                    ></textarea>
                 </div>
                 <div className="w-full p-8">
                     <textarea
@@ -89,8 +88,7 @@ export default function JsonDifference(): JSX.Element {
                         className="w-full h-96 p-2 border border-gray-300 dark:bg-gray-900 dark:border-gray-700 resize-none focus:border-gray-400 focus:outline-none rounded-sm scrollbar-thumb-gray-200 dark:scrollbar-thumb-gray-800 scrollbar-thin scrollbar-thumb-rounded-md"
                         placeholder="Enter your second JSON object"
                         onInput={(e) => setSecond((e.target as HTMLTextAreaElement).value)}
-                    >
-                    </textarea>
+                    ></textarea>
                 </div>
             </div>
             <div className="flex flex-row justify-center items-center mb-8">
