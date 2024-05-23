@@ -9,7 +9,7 @@ export default function DiffSummary(props: React.PropsWithRef<Info<IterableSumma
             key={index} 
             depth={props.depth}
             filterKeyword={props.filterKeyword}
-            collapsed={props.summary && (props.summary.length < 100)}
+            collapsed={true}
             showOnlyDifferences={props.showOnlyDifferences}
         />
     ))

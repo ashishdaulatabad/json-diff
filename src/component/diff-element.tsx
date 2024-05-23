@@ -107,7 +107,7 @@ function getStylesRight(props: Info<Field>) {
 function WidthSet(props: React.PropsWithoutRef<{depth: number}>): JSX.Element {
     return (<> 
         {Array.from({length: props.depth}).map((_, index: number) => (
-             <div className="border-l border-gray-400 min-w-10" key={index}></div> 
+             <div className="border-l border-gray-400 min-w-6" key={index}></div> 
         ))}
     </>)
 }
